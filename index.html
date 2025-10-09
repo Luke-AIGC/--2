@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>课堂问答抽卡系统 - 模块化版本</title>
+  
+  <!-- 引入 Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- 引入自定义样式 -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-8">
+  <div class="w-full max-w-7xl">
+    <!-- 标题 -->
+    <h1 class="text-5xl font-bold text-white text-center mb-8 drop-shadow-lg">
+      ✨ 课堂问答抽卡系统 ✨
+    </h1>
+    
+    <!-- 抽中的卡片显示区 -->
+    <div class="drawn-display mb-8" id="drawnDisplay">
+      <div class="text-white text-2xl text-center" id="placeholder">
+        <div class="text-4xl mb-2">🎴</div>
+        点击下方"随机抽卡"按钮开始
+      </div>
+    </div>
+    
+    <!-- 卡片容器 -->
+    <div class="cards-container mb-8" id="cardsContainer">
+      <!-- 卡片将通过 JavaScript 模块生成 -->
+    </div>
+    
+    <!-- 控制按钮 -->
+    <div class="flex justify-center gap-4">
+      <button 
+        id="drawBtn"
+        class="px-8 py-4 bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold text-xl rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
+      >
+        <span class="text-2xl">🎲</span>
+        <span>随机抽卡</span>
+      </button>
+      <button 
+        id="resetBtn"
+        class="px-8 py-4 bg-white hover:bg-gray-100 text-gray-800 font-bold text-xl rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
+      >
+        <span class="text-2xl">🔄</span>
+        <span>重置</span>
+      </button>
+    </div>
+    
+    <!-- 统计信息 -->
+    <div class="text-center mt-6 text-white text-lg">
+      <span>剩余卡片: <span id="remainingCount" class="font-bold text-2xl text-yellow-300">49</span> / 49</span>
+    </div>
+    
+    <!-- 调试信息面板（开发时使用） -->
+    <div id="debugPanel" class="fixed bottom-4 right-4 bg-black bg-opacity-50 text-white p-4 rounded-lg text-sm" style="display: none;">
+      <div>应用状态: <span id="appStatus">初始化中...</span></div>
+      <div>性能监控: <span id="performanceInfo">-</span></div>
+      <div>错误计数: <span id="errorCount">0</span></div>
+    </div>
+  </div>
+
+  <!-- 引入模块化JavaScript文件 -->
+  <!-- 注意：按照依赖关系顺序引入 -->
+  <script type="module" src="js/modules/StudentDataManager.js"></script>
+  <script type="module" src="js/modules/CardDrawEngine.js"></script>
+  <script type="module" src="js/modules/UIRenderer.js"></script>
+  <script type="module" src="js/modules/EventHandler.js"></script>
+  <script type="module" src="js/App.js"></script>
+  
+  <!-- 应用初始化脚本 -->
+  <script type="module">
+    // 等待DOM加载完成后初始化应用
+    document.addEventListener('DOMContentLoaded', () => {
+      // App.js 中的全局实例会自动初始化
+      console.log('课堂问答抽卡系统 - 模块化版本已启动');
+      
+      // 开发模式下显示调试面板
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        const debugPanel = document.getElementById('debugPanel');
+        if (debugPanel) {
+          debugPanel.style.display = 'block';
+        }
+      }
+    });
+    
+    // 全局错误处理
+    window.addEventListener('error', (event) => {
+      console.error('全局错误:', event.error);
+      const errorCount = document.getElementById('errorCount');
+      if (errorCount) {
+        const count = parseInt(errorCount.textContent) + 1;
+        errorCount.textContent = count;
+      }
+    });
+    
+    // 未处理的Promise拒绝
+    window.addEventListener('unhandledrejection', (event) => {
+      console.error('未处理的Promise拒绝:', event.reason);
+      event.preventDefault(); // 防止在控制台显示错误
+    });
+  </script>
+</body>
+</html>
