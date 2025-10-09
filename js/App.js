@@ -233,7 +233,7 @@ class App {
       console.log('✓ 学生数据管理器已创建');
       
       // 2. 抽卡引擎（依赖数据管理器）
-      this.modules.cardDrawEngine = new CardDrawEngine();
+      this.modules.cardDrawEngine = new CardDrawEngine(this.modules.studentDataManager);
       console.log('✓ 抽卡引擎已创建');
       
       // 3. UI渲染器（无依赖）
@@ -412,7 +412,7 @@ class App {
     if (!this.config.studentData.autoSave) return;
     
     try {
-      const data = this.modules.studentDataManager.exportData();
+      const data = this.modules.studentDataManager.exportStudents();
       localStorage.setItem('cardDrawSystem', JSON.stringify(data));
       
       if (this.config.debug.enabled) {

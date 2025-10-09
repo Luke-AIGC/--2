@@ -118,31 +118,31 @@ class EventHandler {
   bindModuleEvents() {
     // 监听抽卡引擎事件
     if (this.modules.cardDrawEngine) {
-      this.modules.cardDrawEngine.addEventListener('draw-start', (e) => {
-        this.handleDrawStart(e.detail);
+      this.modules.cardDrawEngine.addEventListener('draw-start', (data) => {
+        this.handleDrawStart(data);
       });
       
-      this.modules.cardDrawEngine.addEventListener('draw-complete', (e) => {
-        this.handleDrawComplete(e.detail);
+      this.modules.cardDrawEngine.addEventListener('draw-complete', (data) => {
+        this.handleDrawComplete(data);
       });
       
-      this.modules.cardDrawEngine.addEventListener('draw-error', (e) => {
-        this.handleDrawError(e.detail);
+      this.modules.cardDrawEngine.addEventListener('draw-error', (data) => {
+        this.handleDrawError(data);
       });
       
-      this.modules.cardDrawEngine.addEventListener('reset-complete', (e) => {
-        this.handleResetComplete(e.detail);
+      this.modules.cardDrawEngine.addEventListener('reset-complete', (data) => {
+        this.handleResetComplete(data);
       });
     }
     
     // 监听数据管理器事件
     if (this.modules.studentDataManager) {
-      this.modules.studentDataManager.addEventListener('data-updated', (e) => {
-        this.handleDataUpdated(e.detail);
+      this.modules.studentDataManager.addEventListener('data-updated', (data) => {
+        this.handleDataUpdated(data);
       });
       
-      this.modules.studentDataManager.addEventListener('data-imported', (e) => {
-        this.handleDataImported(e.detail);
+      this.modules.studentDataManager.addEventListener('data-imported', (data) => {
+        this.handleDataImported(data);
       });
     }
   }
@@ -331,33 +331,67 @@ class EventHandler {
    * 处理抽卡完成事件
    * @param {Object} detail - 事件详情
    */
+  /**
+   * 处理抽卡完成事件
+   * @param {Object} detail - 抽卡结果详情，包含学生信息和剩余数量
+   */
   handleDrawComplete(detail) {
     console.log('抽卡完成:', detail);
     
-    const { student, remainingCount } = detail;
+    // 防护性检查：确保 detail 存在且包含必要的数据
+    if (!detail) {
+      console.error('抽卡完成事件缺少详情数据');
+      this.isProcessing = false;
+      return;
+    }
     
-    // 显示抽中的卡片
-    this.modules.uiRenderer.showDrawnCard(student);
+    // 解构数据，提供默认值以防数据不完整
+    const { 
+      student = null, 
+      remainingCount = 0,
+      drawRecord = null 
+    } = detail;
     
-    // 更新剩余数量
-    this.modules.uiRenderer.updateRemainingCount(remainingCount);
+    // 检查关键数据是否存在
+    if (!student) {
+      console.error('抽卡完成事件缺少学生数据');
+      this.isProcessing = false;
+      return;
+    }
     
-    // 重新渲染卡片列表
-    const allStudents = this.modules.studentDataManager.getAllStudents();
-    this.modules.uiRenderer.renderCards(allStudents);
-    
-    // 恢复按钮状态
-    this.modules.uiRenderer.setButtonState('drawBtn', remainingCount > 0, '随机抽卡');
-    this.modules.uiRenderer.setButtonState('resetBtn', true);
-    
-    // 播放音效
-    this.playSound('draw-complete', student.rarity);
-    
-    // 重置处理状态
-    this.isProcessing = false;
-    
-    // 触发自定义事件
-    this.dispatchCustomEvent('card-drawn', { student, remainingCount });
+    try {
+      // 显示抽中的卡片
+      this.modules.uiRenderer.showDrawnCard(student);
+      
+      // 更新剩余数量
+      this.modules.uiRenderer.updateRemainingCount(remainingCount);
+      
+      // 重新渲染卡片列表
+      const allStudents = this.modules.studentDataManager.getAllStudents();
+      this.modules.uiRenderer.renderCards(allStudents);
+      
+      // 恢复按钮状态
+      this.modules.uiRenderer.setButtonState('drawBtn', remainingCount > 0, '随机抽卡');
+      this.modules.uiRenderer.setButtonState('resetBtn', true);
+      
+      // 播放音效（如果学生有稀有度信息）
+      if (student.rarity) {
+        this.playSound('draw-complete', student.rarity);
+      } else {
+        this.playSound('draw-complete');
+      }
+      
+      // 触发自定义事件
+      this.dispatchCustomEvent('card-drawn', { student, remainingCount, drawRecord });
+      
+    } catch (error) {
+      console.error('处理抽卡完成事件时发生错误:', error);
+      // 显示用户友好的错误信息
+      this.showMessage('抽卡完成处理出现问题，请重试', 'error');
+    } finally {
+      // 无论如何都要重置处理状态
+      this.isProcessing = false;
+    }
   }
 
   /**
