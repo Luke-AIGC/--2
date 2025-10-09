@@ -498,35 +498,6 @@ class UIRenderer {
     placeholder.innerHTML = ``;
     
     this.elements.drawnDisplay.appendChild(placeholder);
-    
-    // 调整抽卡结果显示区域的位置
-    this.adjustDrawnDisplayPosition();
-  }
-
-  /**
-   * 动态调整抽卡结果显示区域的位置
-   * 确保抽到的卡片显示在卡池正上方
-   */
-  adjustDrawnDisplayPosition() {
-    const drawnDisplay = this.elements.drawnDisplay;
-    const cardsContainer = this.elements.cardsContainer;
-    
-    if (drawnDisplay && cardsContainer) {
-      // 获取卡池容器的位置信息
-      const containerRect = cardsContainer.getBoundingClientRect();
-      
-      // 计算抽卡结果区域应该显示的位置
-      // 显示在卡池上方300px的位置
-      const topPosition = Math.max(50, containerRect.top - 300);
-      
-      // 设置位置
-      drawnDisplay.style.top = `${topPosition}px`;
-      
-      // 确保在移动设备上也有合适的显示
-      if (window.innerWidth <= 768) {
-        drawnDisplay.style.top = `${Math.max(20, containerRect.top - 200)}px`;
-      }
-    }
   }
 
   /**
@@ -590,15 +561,11 @@ class UIRenderer {
   }
 
   /**
-   * 处理窗口大小变化
-   * 重新计算容器尺寸和卡片位置
+   * 响应式布局调整
    */
   handleResize() {
     this.setupContainerDimensions();
     // 重新计算卡片位置（如果需要）
-    
-    // 重新调整抽卡结果显示区域的位置
-    this.adjustDrawnDisplayPosition();
   }
 
   /**

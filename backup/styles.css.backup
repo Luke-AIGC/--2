@@ -82,27 +82,18 @@ body {
 /* 容器布局 */
 .cards-container {
   position: relative;
-  z-index: 1;
   width: 100%;
   height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 100px; /* 为上方卡片留出空间 - 调整卡片位置下移 */
 }
 
 .drawn-display {
-  position: absolute;
-  top: 120px; /* 调整抽卡结果显示位置，与卡片下移保持协调 */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
   min-height: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  max-width: 1200px;
 }
 
 /* 结果卡片样式 */
