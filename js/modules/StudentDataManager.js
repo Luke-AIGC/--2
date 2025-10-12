@@ -70,21 +70,53 @@ class StudentDataManager {
 
   /**
    * 初始化默认学生数据
-   * 为每个学生生成唯一的ID、姓名和头像
+   * 使用真实学生姓名和本地头像图片
    */
   initializeDefaultData() {
-    this.students = Array.from({length: this.defaultStudentCount}, (_, i) => ({
-      id: i + 1,
-      name: `学生${i + 1}号`,
-      // 使用 DiceBear API 生成随机头像，每个学号对应一个固定头像
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 1}`,
-      // 稀有度等级 (普通、稀有、超稀有)
-      rarity: this.generateRarity(),
-      // 是否已被抽中
-      isDrawn: false,
-      // 抽中时间戳
-      drawnAt: null
-    }));
+    // 预定义的学生姓名列表（与images目录中的图片文件完全对应）
+    this.studentNames = [
+      // 真实学生姓名（与images目录中的图片文件对应）
+      '丁俊博', '丁宇哲', '丁旭尧', '严晨瑞', '刘子轩', '刘易涵', '刘舒雅', 
+      '吴岳阳', '喻言', '孙成梦', '张恒溢', '张烨琪', '彭特', '徐仁予', 
+      '徐天佑', '徐嫣然', '方梓晨', '方瑜博', '方警妤', '方诗熳', '曾彦宇', 
+      '李东霖', '李妙言', '李宇涵', '李诗璇', '李鑫悦', '李雨滋', '杨果', 
+      '沈文轩', '熊梓嫣', '王俊杰', '王津瑜', '王润邦', '纪怀瑾', '罗昕怡', 
+      '罗昕玥', '肖旭东', '胡楚昀', '胡诗雨', '蒋铭', '蔡国斌', '许锦程', 
+      '谢雄涛', '谭钰泷', '陈泽扬', '陈浩东', '高夕乐', '高语', '龚泓菘'
+    ];
+
+    this.students = Array.from({length: this.defaultStudentCount}, (_, i) => {
+      const name = this.studentNames[i] || `同学${i + 1}`;
+      return {
+        id: i + 1,
+        name: name,
+        // 使用本地图片路径，支持多种格式，如果不存在则使用默认头像
+        avatar: this.getStudentAvatar(name),
+        // 稀有度等级 (普通、稀有、超稀有)
+        rarity: this.generateRarity(),
+        // 是否已被抽中
+        isDrawn: false,
+        // 抽中时间戳
+        drawnAt: null
+      };
+    });
+  }
+
+  /**
+   * 获取学生头像路径
+   * 智能匹配本地图片文件，支持多种格式
+   * @param {string} name - 学生姓名
+   * @returns {string} 头像路径
+   */
+  /**
+   * 获取学生头像路径
+   * 根据学生姓名返回对应的头像图片路径
+   * @param {string} name - 学生姓名
+   * @returns {string} 头像图片路径
+   */
+  getStudentAvatar(name) {
+    // 所有学生头像都是jpg格式，直接返回对应路径
+    return `./images/${name}.jpg`;
   }
 
   /**

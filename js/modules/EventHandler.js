@@ -366,9 +366,9 @@ class EventHandler {
       // 更新剩余数量
       this.modules.uiRenderer.updateRemainingCount(remainingCount);
       
-      // 重新渲染卡片列表
+      // 重新渲染卡片列表（抽卡后不需要动画）
       const allStudents = this.modules.studentDataManager.getAllStudents();
-      this.modules.uiRenderer.renderCards(allStudents);
+      this.modules.uiRenderer.renderCards(allStudents, false);
       
       // 恢复按钮状态
       this.modules.uiRenderer.setButtonState('drawBtn', remainingCount > 0, '随机抽卡');
@@ -419,9 +419,9 @@ class EventHandler {
   handleResetComplete(detail) {
     console.log('重置完成:', detail);
     
-    // 重新渲染所有卡片
+    // 重新渲染所有卡片（重置时需要动画）
     const allStudents = this.modules.studentDataManager.getAllStudents();
-    this.modules.uiRenderer.renderCards(allStudents);
+    this.modules.uiRenderer.renderCards(allStudents, true);
     
     // 显示占位符
     this.modules.uiRenderer.showPlaceholder();
@@ -447,9 +447,9 @@ class EventHandler {
   handleDataUpdated(detail) {
     console.log('数据已更新:', detail);
     
-    // 重新渲染卡片
+    // 重新渲染卡片（数据更新时不需要动画）
     const allStudents = this.modules.studentDataManager.getAllStudents();
-    this.modules.uiRenderer.renderCards(allStudents);
+    this.modules.uiRenderer.renderCards(allStudents, false);
     
     // 更新剩余数量
     const availableCount = this.modules.studentDataManager.getAvailableStudents().length;

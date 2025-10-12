@@ -95,8 +95,9 @@ class UIRenderer {
   /**
    * 渲染卡片列表
    * @param {Array} students - 学生数据数组
+   * @param {boolean} [animate=true] - 是否触发入场动画，默认true
    */
-  renderCards(students) {
+  renderCards(students, animate = true) {
     if (this.isRendering) {
       console.warn('正在渲染中，跳过此次渲染请求');
       return;
@@ -136,8 +137,10 @@ class UIRenderer {
         this.elements.cardsContainer.appendChild(fragment);
       }
       
-      // 触发入场动画
-      this.animateCardsEntrance(availableStudents.length);
+      // 🎯 关键修改：只在需要时触发入场动画
+      if (animate) {
+        this.animateCardsEntrance(availableStudents.length);
+      }
       
     } catch (error) {
       console.error('渲染卡片时发生错误:', error);
@@ -195,7 +198,7 @@ class UIRenderer {
           <div class="rarity-badge">${rarityStars} ${rarityText}</div>
           <img src="${student.avatar}" alt="${student.name}" class="avatar mb-2" loading="lazy">
           <div class="text-gray-800 text-xs font-bold text-center px-1">${student.name}</div>
-          <div class="text-purple-600 text-lg font-bold mt-1">No.${student.id}</div>
+          <div class="text-purple-600 text-lg font-bold mt-1">华夏中学</div>
         </div>
       </div>
     `;
@@ -287,7 +290,7 @@ class UIRenderer {
         <div class="text-gray-500 text-sm mb-1">恭喜抽中</div>
         <div class="text-3xl font-bold text-gray-800 mb-2">${student.name}</div>
         <div class="inline-block bg-purple-600 text-white px-4 py-2 rounded-full text-xl font-bold mb-3">
-          学号 ${student.id}
+          华夏中学
         </div>
         <div class="text-gray-600 text-sm">请这位同学回答问题 🎤</div>
       </div>
@@ -517,7 +520,7 @@ class UIRenderer {
       
       // 计算抽卡结果区域应该显示的位置
       // 显示在卡池上方300px的位置
-      const topPosition = Math.max(50, containerRect.top - 300);
+      const topPosition = Math.max(120, containerRect.top - 300);
       
       // 设置位置
       drawnDisplay.style.top = `${topPosition}px`;
@@ -543,31 +546,31 @@ class UIRenderer {
   }
 
   /**
-   * 获取稀有度文本
+   * 获取稀有度文字 - 适合初中生的趣味标识
    * @param {string} rarity - 稀有度代码
-   * @returns {string} 稀有度文本
+   * @returns {string} 趣味稀有度文字
    */
   getRarityText(rarity) {
     const rarityMap = {
-      'N': 'NORMAL',
-      'R': 'RARE',
-      'SR': 'SUPER RARE'
+      'N': '好朋友',
+      'R': '快乐宝',
+      'SR': '幸运星'
     };
-    return rarityMap[rarity] || 'NORMAL';
+    return rarityMap[rarity] || '好朋友';
   }
 
   /**
-   * 获取稀有度星级
+   * 获取稀有度表情符号
    * @param {string} rarity - 稀有度代码
-   * @returns {string} 星级字符串
+   * @returns {string} 表情符号字符串
    */
   getRarityStars(rarity) {
     const starsMap = {
-      'N': '★',
-      'R': '★★',
-      'SR': '★★★'
+      'N': '⭐',
+      'R': '🎈',
+      'SR': '🏅'
     };
-    return starsMap[rarity] || '★';
+    return starsMap[rarity] || '⭐';
   }
 
   /**
