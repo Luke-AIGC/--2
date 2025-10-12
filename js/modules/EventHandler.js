@@ -374,12 +374,8 @@ class EventHandler {
       this.modules.uiRenderer.setButtonState('drawBtn', remainingCount > 0, '随机抽卡');
       this.modules.uiRenderer.setButtonState('resetBtn', true);
       
-      // 播放音效（如果学生有稀有度信息）
-      if (student.rarity) {
-        this.playSound('draw-complete', student.rarity);
-      } else {
-        this.playSound('draw-complete');
-      }
+      // 播放音效
+      this.playSound('draw-complete');
       
       // 触发自定义事件
       this.dispatchCustomEvent('card-drawn', { student, remainingCount, drawRecord });
@@ -593,7 +589,11 @@ class EventHandler {
    * @param {string} soundType - 音效类型
    * @param {string} rarity - 稀有度（可选）
    */
-  playSound(soundType, rarity = null) {
+  /**
+   * 播放音效
+   * @param {string} soundType - 音效类型
+   */
+  playSound(soundType) {
     // 音效播放逻辑（需要音频文件）
     try {
       let audioFile = '';
@@ -603,9 +603,7 @@ class EventHandler {
           audioFile = 'sounds/draw-start.mp3';
           break;
         case 'draw-complete':
-          audioFile = rarity === 'SR' ? 'sounds/draw-sr.mp3' : 
-                     rarity === 'R' ? 'sounds/draw-r.mp3' : 
-                     'sounds/draw-normal.mp3';
+          audioFile = 'sounds/draw-normal.mp3';
           break;
         case 'reset':
           audioFile = 'sounds/reset.mp3';

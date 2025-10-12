@@ -185,9 +185,6 @@ class UIRenderer {
    * @returns {string} HTML字符串
    */
   createCardHTML(student) {
-    const rarityText = this.getRarityText(student.rarity);
-    const rarityStars = this.getRarityStars(student.rarity);
-    
     return `
       <div class="card-inner">
         <div class="card-front">
@@ -195,7 +192,6 @@ class UIRenderer {
           <div class="text-white text-xs font-bold">MYSTERY</div>
         </div>
         <div class="card-back">
-          <div class="rarity-badge">${rarityStars} ${rarityText}</div>
           <img src="${student.avatar}" alt="${student.name}" class="avatar mb-2" loading="lazy">
           <div class="text-gray-800 text-xs font-bold text-center px-1">${student.name}</div>
           <div class="text-purple-600 text-lg font-bold mt-1">华夏中学</div>
@@ -261,9 +257,6 @@ class UIRenderer {
     } else {
       this.elements.drawnDisplay.appendChild(resultCard);
     }
-    
-    // 添加特效
-    this.addSpecialEffects(resultCard, student.rarity);
   }
 
   /**
@@ -274,9 +267,6 @@ class UIRenderer {
   createResultCard(student) {
     const resultCard = document.createElement('div');
     resultCard.className = 'result-card';
-    
-    const rarityText = this.getRarityText(student.rarity);
-    const rarityStars = this.getRarityStars(student.rarity);
     
     resultCard.innerHTML = `
       <div class="star-decoration" style="top: 10px; left: 20px; font-size: 24px;">⭐</div>
@@ -294,87 +284,9 @@ class UIRenderer {
         </div>
         <div class="text-gray-600 text-sm">请这位同学回答问题 🎤</div>
       </div>
-      
-      <div class="absolute bottom-4 text-xs text-gray-400">
-        ${rarityStars} ${rarityText} ${rarityStars}
-      </div>
     `;
     
     return resultCard;
-  }
-
-  /**
-   * 添加特殊效果
-   * @param {HTMLElement} element - 目标元素
-   * @param {string} rarity - 稀有度
-   */
-  addSpecialEffects(element, rarity) {
-    // 根据稀有度添加不同的特效
-    switch (rarity) {
-      case 'SR':
-        this.addGoldenGlow(element);
-        this.addFloatingParticles(element);
-        break;
-      case 'R':
-        this.addSilverGlow(element);
-        break;
-      default:
-        // 普通卡片无特殊效果
-        break;
-    }
-  }
-
-  /**
-   * 添加金色光效
-   * @param {HTMLElement} element - 目标元素
-   */
-  addGoldenGlow(element) {
-    element.style.boxShadow = '0 0 30px rgba(255, 215, 0, 0.6), 0 20px 60px rgba(0,0,0,0.4)';
-    element.style.animation = 'goldenPulse 2s ease-in-out infinite';
-    
-    // 添加CSS动画（如果不存在）
-    this.addCSSAnimation('goldenPulse', `
-      0%, 100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 20px 60px rgba(0,0,0,0.4); }
-      50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.8), 0 20px 60px rgba(0,0,0,0.4); }
-    `);
-  }
-
-  /**
-   * 添加银色光效
-   * @param {HTMLElement} element - 目标元素
-   */
-  addSilverGlow(element) {
-    element.style.boxShadow = '0 0 20px rgba(192, 192, 192, 0.6), 0 20px 60px rgba(0,0,0,0.4)';
-  }
-
-  /**
-   * 添加浮动粒子效果
-   * @param {HTMLElement} element - 目标元素
-   */
-  addFloatingParticles(element) {
-    for (let i = 0; i < 5; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'floating-particle';
-      particle.style.cssText = `
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background: gold;
-        border-radius: 50%;
-        pointer-events: none;
-        animation: float ${2 + Math.random() * 2}s ease-in-out infinite;
-        animation-delay: ${Math.random() * 2}s;
-        left: ${Math.random() * 100}%;
-        top: ${Math.random() * 100}%;
-      `;
-      element.appendChild(particle);
-    }
-    
-    // 添加浮动动画
-    this.addCSSAnimation('float', `
-      0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 1; }
-      50% { transform: translateY(-20px) rotate(180deg); opacity: 0.7; }
-    `);
   }
 
   /**
@@ -543,34 +455,6 @@ class UIRenderer {
         container.removeChild(container.firstChild);
       }
     }
-  }
-
-  /**
-   * 获取稀有度文字 - 适合初中生的趣味标识
-   * @param {string} rarity - 稀有度代码
-   * @returns {string} 趣味稀有度文字
-   */
-  getRarityText(rarity) {
-    const rarityMap = {
-      'N': '好朋友',
-      'R': '快乐宝',
-      'SR': '幸运星'
-    };
-    return rarityMap[rarity] || '好朋友';
-  }
-
-  /**
-   * 获取稀有度表情符号
-   * @param {string} rarity - 稀有度代码
-   * @returns {string} 表情符号字符串
-   */
-  getRarityStars(rarity) {
-    const starsMap = {
-      'N': '⭐',
-      'R': '🎈',
-      'SR': '🏅'
-    };
-    return starsMap[rarity] || '⭐';
   }
 
   /**
