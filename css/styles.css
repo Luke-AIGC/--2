@@ -13,8 +13,8 @@ body {
 
 /* 卡片基础样式 */
 .card {
-  width: 120px;
-  height: 160px;
+  width: 180px;
+  height: 240px;
   position: absolute;
   transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   cursor: pointer;
@@ -84,20 +84,20 @@ body {
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 400px;
+  height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 100px; /* 为上方卡片留出空间 - 调整卡片位置下移 */
+  margin-top: 150px; /* 为上方卡片留出更多空间 - 调整卡片位置下移 */
 }
 
 .drawn-display {
   position: absolute;
-  top: 120px; /* 调整抽卡结果显示位置，与卡片下移保持协调 */
+  top: 180px; /* 调整抽卡结果显示位置，与卡片下移和容器调整保持协调 */
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  min-height: 280px;
+  min-height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,15 +107,15 @@ body {
 
 /* 结果卡片样式 */
 .result-card {
-  width: 280px;
-  height: 380px;
+  width: 420px;
+  height: 570px;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 30px;
   animation: showResult 0.6s ease-out;
   border: 4px solid rgba(255,255,255,0.8);
   position: relative;
@@ -128,7 +128,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 120px;
+  height: 180px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   z-index: 0;
 }
@@ -146,8 +146,8 @@ body {
 
 /* 头像样式 */
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid white;
@@ -155,14 +155,14 @@ body {
 }
 
 .result-avatar {
-  width: 160px;
-  height: 160px;
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
   object-fit: cover;
   border: 5px solid white;
   box-shadow: 0 8px 16px rgba(0,0,0,0.3);
   z-index: 1;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 /* 装饰元素 */
@@ -199,23 +199,23 @@ body {
 /* 响应式设计 */
 @media (max-width: 768px) {
   .cards-container {
-    height: 300px;
+    height: 450px;
   }
   
   .card {
-    width: 80px;
-    height: 110px;
+    width: 120px;
+    height: 160px;
   }
   
   .result-card {
-    width: 240px;
-    height: 320px;
-    padding: 15px;
+    width: 320px;
+    height: 430px;
+    padding: 20px;
   }
   
   .result-avatar {
-    width: 100px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
   }
 }
 

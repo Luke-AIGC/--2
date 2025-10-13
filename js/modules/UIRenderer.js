@@ -20,9 +20,9 @@ class UIRenderer {
     
     // 卡片布局配置
     this.layoutConfig = {
-      radius: 200,
+      radius: 300,
       centerOffset: { x: 0, y: 0 },
-      cardSize: { width: 120, height: 160 },
+      cardSize: { width: 180, height: 240 },
       maxCardsPerRow: 12
     };
     
@@ -194,7 +194,7 @@ class UIRenderer {
         <div class="card-back">
           <img src="${student.avatar}" alt="${student.name}" class="avatar mb-2" loading="lazy">
           <div class="text-gray-800 text-xs font-bold text-center px-1">${student.name}</div>
-          <div class="text-purple-600 text-lg font-bold mt-1">华夏中学</div>
+          <div class="text-purple-600 text-lg font-bold mt-1">华夏学校</div>
         </div>
       </div>
     `;
@@ -280,7 +280,7 @@ class UIRenderer {
         <div class="text-gray-500 text-sm mb-1">恭喜抽中</div>
         <div class="text-3xl font-bold text-gray-800 mb-2">${student.name}</div>
         <div class="inline-block bg-purple-600 text-white px-4 py-2 rounded-full text-xl font-bold mb-3">
-          华夏中学
+          华夏学校
         </div>
         <div class="text-gray-600 text-sm">请这位同学回答问题 🎤</div>
       </div>
