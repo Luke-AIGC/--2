@@ -1,7 +1,19 @@
-/**
- * 课堂问答抽卡系统 - 样式文件
- * 包含所有UI样式和动画效果
- */
+/* 左侧控制面板样式 */
+.left-control-panel {
+  position: fixed;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
 /* 全局样式 */
 body {
@@ -101,8 +113,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: calc(100% - 300px); /* 减去左侧控制面板的宽度，避免遮挡 */
   max-width: 1200px;
+  margin-left: 150px; /* 为左侧控制面板留出空间 */
+  pointer-events: none; /* 避免遮挡左侧控制面板的点击事件 */
+}
+
+/* 重新启用抽卡结果内容的pointer-events */
+.drawn-display > * {
+  pointer-events: auto;
 }
 
 /* 结果卡片样式 */
